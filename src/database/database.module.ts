@@ -18,7 +18,7 @@ import config from '../config';
           host: configService.database.host,
           password: configService.database.psswd,
           username: configService.database.user,
-          synchronize: true,
+          synchronize: false,
           autoLoadEntities: true,
           // ssl: {
           //   rejectUnauthorized: false,
