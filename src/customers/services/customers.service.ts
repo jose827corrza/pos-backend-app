@@ -1,68 +1,67 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Customer } from '../entities/customers.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
-import { log } from 'console';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomersService {
-  private customerArray: Array<Customer> = [
-    {
-      Id: 1015464260,
-      NameLastName: 'Daniel Corredor',
-      AddressOne: 'Calle 16A Sur N13F-52',
-      AddressTwo: '',
-      Telephone: 7326919,
-      Cellphone: 3059044855,
-      Email: 'daniel.customer@gmail.com',
-      Department: 'Cundinamarca',
-      City: 'Soacha',
-      Mayor: '',
-    },
-  ];
+  constructor(
+    @InjectRepository(Customer)
+    private customersRepository: Repository<Customer>,
+  ) {}
 
-  findAll(): Customer[] {
-    return this.customerArray;
+  // private customerArray: Array<Customer> = [
+  //   {
+  //     documentId: 1015464260,
+  //     nameLastname: 'Daniel Corredor',
+  //     mainAddress: 'Calle 16A Sur N13F-52',
+  //     optionalAddress: '',
+  //     phoneNumber: 7326919,
+  //     mobile: 3059044855,
+  //     email: 'daniel.customer@gmail.com',
+  //     state: 'Cundinamarca',
+  //     city: 'Soacha',
+  //     mayor: '',
+  //   },
+  // ];
+
+  findAll(): Promise<Customer[]> {
+    return this.customersRepository.find();
   }
 
-  createNewCustomer(newCustomer: CreateCustomerDto): Customer {
-    try {
-      this.customerArray.push({ ...newCustomer });
-      return newCustomer;
-    } catch (error) {
-      throw new BadRequestException();
-    }
+  async createNewCustomer(data: CreateCustomerDto): Promise<Customer> {
+    const newCustomer = this.customersRepository.create(data);
+    return await this.customersRepository.save(newCustomer);
   }
 
-  findOne(customerId: number): Customer {
-    const product = this.customerArray.find(
-      (product) => customerId === product.Id,
-    );
+  async findOne(documentId: number): Promise<Customer> {
+    const customer = await this.customersRepository.findOneBy({ documentId });
 
-    if (!product) {
+    if (!customer) {
       throw new NotFoundException();
     }
-    return product;
+    return customer;
   }
 
-  updateOne(customerId: number, customerData: UpdateCustomerDto) {
-    //   const customerToUpdate = this.findOne(customerId);
-    //   const customerIndex = this.customerArray.findIndex(
-    //     (customer) => customerToUpdate.Id === customer.Id,
-    //   );
-    //   this.customerArray[customerIndex] = {
-    //     Id: customerToUpdate.Id,
-    //     NameLastName: customerData.NameLastName,
-    //     ...customerData,
-    //   };
-    // }
-    return `updated customer with #${customerId} and data: ${customerData}`;
+  async updateOne(
+    documentId: number,
+    changes: UpdateCustomerDto,
+  ): Promise<Customer> {
+    const customer = await this.customersRepository.findOneBy({ documentId });
+    if (!customer) {
+      throw new NotFoundException();
+    }
+    this.customersRepository.merge(customer, changes);
+    return await this.customersRepository.save(customer);
   }
 
-  deleteOne(customerId: number) {
-    return `deleted ${customerId}`;
+  async deleteOne(documentId: number): Promise<{ message: string }> {
+    const customer = await this.customersRepository.findOneBy({ documentId });
+    if (!customer) {
+      throw new NotFoundException();
+    }
+    await this.customersRepository.delete(customer.id);
+    return { message: `Customer #${documentId} deleted` };
   }
 }
