@@ -70,6 +70,11 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Migrations
 
+**IMPORTANT**
+
+Before deploying into PRD environment, from the laptop generate the migration appointing to the PRD DB.
+The second option (not good idea), download all the packages in the server and run the build:prod command.
+
 Several commands that will be used on this project.
 
 Generates a migration with the current status in the entities
