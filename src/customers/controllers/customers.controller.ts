@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { CustomersService } from '../services/customers.service';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
@@ -17,17 +18,29 @@ export class CustomersController {
 
   @Get()
   getAll() {
-    return this.customersService.findAll();
+    try {
+      return this.customersService.findAll();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Post()
   createCustomer(@Body() payload: CreateCustomerDto) {
-    return this.customersService.createNewCustomer(payload);
+    try {
+      return this.customersService.createNewCustomer(payload);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) customerId: number) {
-    this.customersService.findOne(customerId);
+    try {
+      return this.customersService.findOne(customerId);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Put('/:id')
@@ -35,11 +48,19 @@ export class CustomersController {
     @Param('id', ParseIntPipe) customerId: number,
     @Body() payload: UpdateCustomerDto,
   ) {
-    this.customersService.updateOne(customerId, payload);
+    try {
+      return this.customersService.updateOne(customerId, payload);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Delete('/:id')
   deleteOne(@Param('id', ParseIntPipe) customerId: number) {
-    this.customersService.deleteOne(customerId);
+    try {
+      return this.customersService.deleteOne(customerId);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

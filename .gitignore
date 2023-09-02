@@ -1,7 +1,10 @@
 # compiled output
 /dist
 /node_modules
+/postgres_data
 db.env
+prod.env
+.env
 # Logs
 logs
 *.log

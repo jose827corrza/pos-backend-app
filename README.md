@@ -68,6 +68,27 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
+## Migrations
+
+**IMPORTANT**
+
+Before deploying into PRD environment, from the laptop generate the migration appointing to the PRD DB.
+The second option (not good idea), download all the packages in the server and run the build:prod command.
+
+Several commands that will be used on this project.
+
+Generates a migration with the current status in the entities
+> npm run migrations:run
+
+Run the last migration created
+> npm run migrations:run
+
+Makes a rollback
+> npm run migrations:revert
+
+Drop all the migrations **WARNING**
+> npm run migrations:drop
+
 ## License
 
 Nest is [MIT licensed](LICENSE).

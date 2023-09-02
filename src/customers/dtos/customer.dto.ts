@@ -12,42 +12,42 @@ export class CreateCustomerDto {
   @IsNumber()
   @IsPositive()
   @IsNotEmpty()
-  readonly Id: number;
+  readonly documentId: number;
 
   @IsString()
   @IsNotEmpty()
-  readonly NameLastName: string;
+  readonly nameLastname: string;
 
   @IsString()
-  @IsOptional()
-  readonly AddressOne: string;
+  readonly mainAddress: string;
 
   @IsOptional()
   @IsString()
-  readonly AddressTwo: string;
+  readonly optionalAddress: string;
 
   @IsOptional()
   @IsPositive()
-  readonly Telephone: number;
+  readonly phoneNumber: number;
 
+  @IsOptional()
   @IsPositive()
-  @IsNotEmpty()
-  readonly Cellphone: number;
+  readonly mobile: number;
 
   @IsEmail()
-  @IsNotEmpty()
-  readonly Email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly Department: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly City: string;
+  @IsOptional()
+  readonly email: string;
 
   @IsString()
-  readonly Mayor: string;
+  @IsNotEmpty()
+  readonly state: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly city: string;
+
+  @IsString()
+  @IsOptional()
+  readonly mayor: string;
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
