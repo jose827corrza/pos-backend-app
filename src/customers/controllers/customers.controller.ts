@@ -27,7 +27,11 @@ export class CustomersController {
 
   @Post()
   createCustomer(@Body() payload: CreateCustomerDto) {
-    return this.customersService.createNewCustomer(payload);
+    try {
+      return this.customersService.createNewCustomer(payload);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Get(':id')

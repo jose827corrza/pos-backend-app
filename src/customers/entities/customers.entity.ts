@@ -23,7 +23,7 @@ export class Customer {
   @Column({ type: 'bigint' })
   mobile: number;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @Column()

@@ -19,7 +19,6 @@ export class CreateCustomerDto {
   readonly nameLastname: string;
 
   @IsString()
-  @IsOptional()
   readonly mainAddress: string;
 
   @IsOptional()
@@ -30,23 +29,24 @@ export class CreateCustomerDto {
   @IsPositive()
   readonly phoneNumber: number;
 
+  @IsOptional()
   @IsPositive()
-  @IsNotEmpty()
   readonly mobile: number;
 
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   readonly email: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   readonly state: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   readonly city: string;
 
   @IsString()
+  @IsOptional()
   readonly mayor: string;
 }
 
