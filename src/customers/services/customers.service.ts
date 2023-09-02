@@ -26,8 +26,8 @@ export class CustomersService {
   //   },
   // ];
 
-  findAll(): Promise<Customer[]> {
-    return this.customersRepository.find();
+  async findAll(): Promise<Customer[]> {
+    return await this.customersRepository.find();
   }
 
   async createNewCustomer(data: CreateCustomerDto): Promise<Customer> {
@@ -36,7 +36,7 @@ export class CustomersService {
   }
 
   async findOne(documentId: number): Promise<Customer> {
-    const customer = await this.customersRepository.findOne({ documentId });
+    const customer = await this.customersRepository.findOneBy({ documentId });
 
     if (!customer) {
       throw new NotFoundException();
@@ -48,7 +48,7 @@ export class CustomersService {
     documentId: number,
     changes: UpdateCustomerDto,
   ): Promise<Customer> {
-    const customer = await this.customersRepository.findOne({ documentId });
+    const customer = await this.customersRepository.findOneBy({ documentId });
     if (!customer) {
       throw new NotFoundException();
     }
@@ -57,7 +57,7 @@ export class CustomersService {
   }
 
   async deleteOne(documentId: number): Promise<{ message: string }> {
-    const customer = await this.customersRepository.findOne({ documentId });
+    const customer = await this.customersRepository.findOneBy({ documentId });
     if (!customer) {
       throw new NotFoundException();
     }
